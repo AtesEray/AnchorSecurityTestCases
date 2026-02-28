@@ -4,10 +4,28 @@ Bu çalışma, S4E.io platformu üzerinde gerçekleştirilen uçtan uca test sü
 
 ## 🚀 Karar Verme Süreci ve Stratejik Adaptasyon
 Projenin en önemli özelliği, karşılaşılan teknik engellere karşı geliştirilen hızlı adaptasyon yeteneğidir:
-1.  **Arayüz Analizi (UI):** Login modülünde Cloudflare bot koruması tespit edilmiş, testler bu kısıtlamaya göre (buton durum kontrolü) güncellenmiştir.
-2.  **API Seviyesine Geçiş:** UI kısıtlamalarını aşmak ve sistemin asıl "beyni" olan backend yapısını sınamak için doğrudan API testlerine odaklanılmıştır.
+1. **Arayüz Analizi (UI):** Login modülünde Cloudflare bot koruması tespit edilmiş, testler bu kısıtlamaya göre (buton durum kontrolü) güncellenmiştir.
+2. **API Seviyesine Geçiş:** UI kısıtlamalarını aşmak ve sistemin asıl "beyni" olan backend yapısını sınamak için doğrudan API testlerine odaklanılmıştır.
 
 ---
+```text
+🛠️ Kurulum ve Çalıştırma
+Projeyi yerel ortamınızda ayağa kaldırmak için:
+
+npm install
+
+npx playwright test tests/api-test.spec.ts
+npx playwright test tests/login.spec.ts
+npx playwright show-report
+
+⚙️ Kullanılan Teknolojiler
+
+Playwright – E2E test otomasyonu
+TypeScript – Tip güvenliği
+Node.js – Test çalışma ortamı
+
+```
+
 
 ## 🔍 1. Login (Giriş Yap) Modülü UI Testleri
 Login sayfasında, kullanıcı verilerinin doğruluğu ve formun güvenliği Playwright ile test edilmiştir.
@@ -35,10 +53,10 @@ Yazılan testler kasıtlı olarak hatalı veri göndererek sistemin reddetmesini
 | **Hatalı Tip** | `token: 12345` (Sayı) | `Falsy` (Hata) | `true` (Başarılı) | ❌ Failed |
 
 ### Örnek Çıktı Analizi:
-```text
-1. Token Parametresi Eksik Gönderildiğinde (TC-02)
 
+#### 1. Token Parametresi Eksik Gönderildiğinde (TC-02)
 Bu senaryoda sistemin boş bir isteği reddetmesi beklenirken, API'nin isteği başarılı kabul ettiği görülmüştür.
+```text
 1) [chromium] › tests\api-test.spec.ts:28:7 › TC-02: Token parametresi eksik gönderildiğinde sistem isteği reddetmeli 
 
    Error: expect(received).toBeFalsy()
@@ -47,7 +65,6 @@ Bu senaryoda sistemin boş bir isteği reddetmesi beklenirken, API'nin isteği b
    > 35 |      expect(response.ok()).toBeFalsy();
 
 Analiz: Received: true ifadesi, backend tarafında zorunlu alan kontrolünün (required field validation) eksik olduğunu göstermektedir.
-
 
 2. Geçersiz/Sahte Token Gönderildiğinde (TC-03)
 Sistem, veri tabanında bulunmayan "sahte_token" gibi bir anahtarı kabul ederek veri sızdırma riskine kapı açmaktadır.
@@ -59,70 +76,39 @@ Sistem, veri tabanında bulunmayan "sahte_token" gibi bir anahtarı kabul ederek
 
    > 47 |      expect(response.ok()).toBeFalsy();
 
-
-Analiz: Bu bulgu, API'nin bir kimlik doğrulama (Authentication) katmanına sahip olmadığını veya bu katmanın pasif durumda olduğunu kanıtlar.
-
 3. Veri Tipi Doğrulaması (Type Safety) İhlali (TC-04)
 Metin (String) beklenen "token" alanına sayı (Integer) gönderildiğinde sistemin tip kontrolü yapmadığı tespit edilmiştir.
-    3) [chromium] › tests\api-test.spec.ts:50:7 › TC-04: Token string yerine farklı veri tipinde (int) gönderildiğinde sistem çökmameli 
+
+3) [chromium] › tests\api-test.spec.ts:50:7 › TC-04: Token string yerine farklı veri tipinde (int) gönderildiğinde sistem çökmameli 
 
    Error: expect(received).toBeFalsy()
    Received: true
 
    > 60 |      expect(response.ok()).toBeFalsy();
 
-Analiz: Modern bir backend mimarisinde (ASP.NET Core vb.) beklenen bu tip kontrolünün yapılamaması, sistemin beklenmedik veri girişlerine karşı savunmasız olduğunu göstermektedir.
 
-
-
-## 🛠️ Kurulum ve Çalıştırma
-Projeyi yerel ortamınızda ayağa kaldırmak için:
-
-1. Bağımlılıkları yükleyin:
-   ```bash
-   npm install
-
-   npx playwright test tests/api-test.spec.ts
-
-   npx playwright test tests/login.spec.ts
-
-   npx playwright show-report
-
-
-
-### 2. "Kullanılan Teknolojiler"
-* **Playwright:** Hızlı, güvenilir ve modern uçtan uca test (E2E) için.
-* **TypeScript:** Tip güvenliği ve daha sürdürülebilir test kodları için.
-* **Node.js:** Test çalışma ortamı.
-
-### 3. "Görsel Kanıtlar" 
-```markdown
-### 📸 Hata Kanıtları
-#### UI Metin Kayması Hatası:
-![UI Bug](ui_bug.png)
+```
+📸 Hata Kanıtları (Visual Evidence)
 
 
 #### API Güvenlik Zafiyeti Raporu:
-![API Report](output_example.png)
+![API Report](bug_images/output_example.png)
 
 
-## 🐞 3. Manuel Keşifsel Test: Quizzes Modülü
+## 🐞 3. Manuel Keşifsel Test: 
+## Quizzes Modülü
 Otomasyon dışında yapılan manuel incelemelerde, uygulama mantığında (Business Logic) ciddi bir hata tespit edilmiştir.
 * **Bulgu:** Sınav modülünde aynı soruya üst üste farklı yanlış cevaplar verildiğinde "Wrong Count" sayacı artmamaktadır.
 * **Önem Derecesi:** Yüksek (High) - İstatistiksel verilerin doğruluğunu bozmaktadır.
 
-![Quiz Bug](quizbug_1.png)
-![Quiz Bug](quizbug_2.png)
+#### ![Quiz Bug](bug_images/quizbug_1.png)
+#### ![Quiz Bug](bug_images/quizbug_2.png)
 
+## UI/Responsive Layout Hatası - Metin Çakışması (Overlap)
 
+* **Bulgu**: "Tool List" sayfasındaki ana bilgilendirme banner'ında (mavi alan), viewport boyutu daraldığında (mobil veya tablet görünümü) metin elementleri arasında CSS çakışması (overlap) yaşanmaktadır.
 
----
-
-## 👨‍💻 Hazırlayan ve İletişim
-Bu çalışma, **S4E.io** aday değerlendirme süreci kapsamında **Eray Ateş** tarafından hazırlanmıştır. Teknik detaylar, güvenlik analizleri ve hata raporlamaları hakkında daha fazla bilgi için aşağıdaki kanallardan iletişime geçebilirsiniz:
-
-* **İsim:** Eray Ateş
-* **Eğitim:** Çankaya Üniversitesi - Bilgisayar Mühendisliği (4. Sınıf)
-* **E-posta:** eray.aates@gmail.com
-* **LinkedIn:** [linkedin.com/in/erayatess](https://linkedin.com/in/erayatess) 
-* **GitHub:** [github.com/AtesEray](https://github.com/AtesEray) 
+* **Analiz**: Görsel kanıtta görüldüğü üzere (bug_images/ui_bug.png), metin konteynerlarının esnek (flex/grid) yapısı veya minimum genişlik ayarları doğru kurgulanmadığı için, responsive tasarıma uyum sağlanamamıştır. Bu durum, kritik bilgilendirme alanının okunabilirliğini tamamen ortadan kaldırarak kullanıcı deneyimini (UX) olumsuz etkilemektedir.
+* 
+#### UI Metin Kayması Hatası:
+![UI Bug](bug_images/ui_bug.png)
