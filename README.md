@@ -18,6 +18,13 @@ npx playwright test tests/api-test.spec.ts
 npx playwright test tests/login.spec.ts
 npx playwright show-report
 
+🔑 API Yapılandırması (Configuration)
+Güvenlik prensipleri gereği, proje içerisindeki hassas veriler (API Token) temizlenmiştir. API testlerini başarıyla koşturabilmek için şu adımı izlemelisiniz:
+
+tests/api-test.spec.ts dosyasını açın.
+
+Dosya içerisindeki YOUR_TOKEN alanını geçerli bir S4E API token'ı ile güncelleyin.
+
 ⚙️ Kullanılan Teknolojiler
 
 Playwright – E2E test otomasyonu
