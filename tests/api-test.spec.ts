@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 const API_BASE_URL = 'https://api.s4e.io/api';
 
 // KANKA DİKKAT: Siteden bulduğun o token'ı aşağıdaki tırnakların içine yapıştır
-const API_TOKEN = 'ZeEWv7FMu8Tolhf2MM_NW9ZZtRRQM3id9ahUYhr7m7if7Ilu52SDzkZ-yf-M9dscu-Th3NX5qT5JSclMQWllKg'; 
+const API_TOKEN = 'YOUR_TOKEN'; 
 
 test.describe('S4E.io API /user/info Uç Noktası Edge Case Testleri', () => {
 
