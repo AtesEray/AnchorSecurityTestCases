@@ -113,3 +113,16 @@ Otomasyon dışında yapılan manuel incelemelerde, uygulama mantığında (Busi
 
 ![Quiz Bug](quizbug_1.png)
 ![Quiz Bug](quizbug_2.png)
+
+
+
+---
+
+## 👨‍💻 Hazırlayan ve İletişim
+Bu çalışma, **S4E.io** aday değerlendirme süreci kapsamında **Eray Ateş** tarafından hazırlanmıştır. Teknik detaylar, güvenlik analizleri ve hata raporlamaları hakkında daha fazla bilgi için aşağıdaki kanallardan iletişime geçebilirsiniz:
+
+* **İsim:** Eray Ateş
+* **Eğitim:** Çankaya Üniversitesi - Bilgisayar Mühendisliği (4. Sınıf)
+* **E-posta:** eray.aates@gmail.com
+* **LinkedIn:** [linkedin.com/in/erayatess](https://linkedin.com/in/erayatess) 
+* **GitHub:** [github.com/AtesEray](https://github.com/AtesEray) 
